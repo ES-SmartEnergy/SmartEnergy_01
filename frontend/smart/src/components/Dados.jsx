@@ -1,10 +1,25 @@
 import Table from "react-bootstrap/Table";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 function Dados() {
   return (
     <dev>
-      
+        <div>
+        <div class='col-md-3'>
+            <div class="form-group">
+                <label for="data-pagamento">Datapicker novo</label>    
+                <div class="input-group date" data-date-format="dd/mm/yyyy">
+                  <input  type="text" class="form-control" placeholder="dd/mm/yyyy">
+                </input>
+                  <div class="input-group-addon" >
+                    <span class="glyphicon glyphicon-th"></span>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
         <Table responsive striped bordered hover size="sm"> 
           <thead>
             <tr>
