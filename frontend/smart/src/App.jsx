@@ -6,7 +6,7 @@ import Home from "./components/Home";
 import Dados from "./components/Dados";
 import { BrowserRouter, Route, Link, Routes } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
@@ -15,17 +15,22 @@ function App() {
         <BrowserRouter>
           <Nav variant="underline">
             <Nav.Item>
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link as={Link} to="/dados">Dados</Nav.Link>
+              <Nav.Link as={Link} to="/dados">
+                Dados
+              </Nav.Link>
             </Nav.Item>
           </Nav>
-
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/dados" element={<Dados />}></Route>
-          </Routes>
+          <div style={{ backgroundColor: '#d8ffcc'}}>
+            <Routes>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/dados" element={<Dados />}></Route>
+            </Routes>
+          </div>
         </BrowserRouter>
       </div>
     </>
