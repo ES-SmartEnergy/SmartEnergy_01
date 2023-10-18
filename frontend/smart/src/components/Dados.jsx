@@ -4,6 +4,11 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Grafico from "./Grafico";
 import GraficoArea from "./GraficoArea";
+import { collection, query, orderBy, onSnapshot, QuerySnapshot } from "firebase/firestore"
+import { bd } from "../firebase.jsx"
+import React, { useState, useEffect } from 'react';
+
+
 
 // Array
 function gerarConsumoAleatorio() {
@@ -58,6 +63,18 @@ function renderRows(array) {
 }
 
 function Dados() {
+
+  const [nomes, setNomes] = useState([])
+
+  useEffect(() => {
+    const q = query(collection(bd, "usuarios"))
+    onSnapshot(q, (QuerySnapshot) => {
+      setNomes(QuerySnapshot.docs.map(doc => ({
+        nomes: doc.data()
+      })))
+    })
+  }, [])
+
   // Preenchendo o array com dados aleatórios
   let id = 1;
   for (let hora of horasDoDia) {
@@ -69,7 +86,7 @@ function Dados() {
   }
 
   return (
-    <dev>
+    /*<dev>
       <div
         style={{
           // paddingLeft: "200px",
@@ -85,39 +102,41 @@ function Dados() {
             paddingRight: "100px",
           }}
         >
-          {/* Gráfico de Área */}
+          {/* Gráfico de Área *//*}
 
-          <h2 style={{ textAlign: "center" }}>
-            GRÁFICO DE CONSUMO DE ELETRICIDADE
-          </h2>
+    <h2 style={{ textAlign: "center" }}>
+      GRÁFICO DE CONSUMO DE ELETRICIDADE
+    </h2>
 
-          <div
-            style={{
-              // paddingLeft: "200px",
-              // paddingRight: "200px",
-              paddingBottom: "50px",
-            }}
-          >
-            <GraficoArea />
-          </div>
+    <div
+      style={{
+        // paddingLeft: "200px",
+        // paddingRight: "200px",
+        paddingBottom: "50px",
+      }}
+    >
+      <GraficoArea />
+    </div>
 
-          {/* tabela */}
-          <h2 style={{ textAlign: "center" }}>
-            TABELA DE CONSUMO DE ELETRICIDADE
-          </h2>
-          <Table responsive striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th>Horas</th>
-                <th>Cômodo</th>
-                <th>Consumo (kwh)</th>
-              </tr>
-            </thead>
-            <tbody>{renderRows(dados_consumo)}</tbody>
-          </Table>
-        </div>
-      </div>
-    </dev>
+    {/* tabela *//*}
+    <h2 style={{ textAlign: "center" }}>
+      TABELA DE CONSUMO DE ELETRICIDADE
+    </h2>
+    <Table responsive striped bordered hover size="sm">
+      <thead>
+        <tr>
+          <th>Horas</th>
+          <th>Cômodo</th>
+          <th>Consumo (kwh)</th>
+        </tr>
+      </thead>
+      <tbody>{renderRows(dados_consumo)}</tbody>
+    </Table>
+  </div>
+</div>
+</dev>
+*/
+    console.log(nomes)
   );
 }
 
