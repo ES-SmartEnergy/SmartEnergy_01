@@ -4,18 +4,16 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Grafico from "./Grafico";
 import GraficoArea from "./GraficoArea";
-import { collection, query, orderBy, onSnapshot, QuerySnapshot } from "firebase/firestore"
-import { bd } from "../firebase.jsx"
-import React, { useState, useEffect } from 'react';
+import {
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+  QuerySnapshot,
+} from "firebase/firestore";
+import { bd } from "../firebase.jsx";
+import React, { useState, useEffect } from "react";
 
-
-
-// Array
-function gerarConsumoAleatorio() {
-  return (Math.random() * (10 - 3) + 3).toFixed(2);
-}
-
-// Horas do dia
 export const horasDoDia = [
   "00:00",
   "01:00",
@@ -43,50 +41,70 @@ export const horasDoDia = [
   "23:00",
 ];
 
-// Cômodos
-const comodos = ["sala", "quarto", "cozinha"];
-
 // Objeto dados_consumo com todas as chaves
 export const dados_consumo = [];
 
 // faz as linhas da tabela
-function renderRows(array) {
+/*function renderRows(array) {
   return array.map((d) => {
     return (
-      <tr key={d.id}>
-        <td>{d.hora}</td>
+      <tr>
+        <td>{d.data_hora.hora}</td>
         <td>{d.comodo}</td>
-        <td>{d.consumo}</td>
+        <td>{d.gasto}</td>
       </tr>
     );
   });
+}*/
+
+function renderRows(array) {
+  const rows = [];
+
+  for (let i = 0; i < array.length; i++) {
+    const d = array[i];
+    rows.push(
+      <tr key={i}>
+        <td>{d.data_hora.hora}</td>
+        <td>{d.comodo}</td>
+        <td>{d.gasto}</td>
+      </tr>
+    );
+  }
+
+  return rows;
+}
+
+function extrairDataEHora(data_hora) {
+  // Converte os segundos e nanossegundos em milissegundos
+  const milissegundos =
+    data_hora.seconds * 1000 + data_hora.nanoseconds / 1000000;
+
+  // Cria um objeto Date com os milissegundos
+  const dia = new Date(milissegundos);
+
+  // Formata a data e hora em um formato legível
+  return { data: dia.toLocaleDateString(), hora: dia.toLocaleTimeString() };
 }
 
 function Dados() {
-
-  const [nomes, setNomes] = useState([])
+  const [documento, setDocumento] = useState([]);
 
   useEffect(() => {
-    const q = query(collection(bd, "usuarios"))
+    const q = query(collection(bd, "usuarios"));
     onSnapshot(q, (QuerySnapshot) => {
-      setNomes(QuerySnapshot.docs.map(doc => ({
-        nomes: doc.data()
-      })))
-    })
-  }, [])
-
-  // Preenchendo o array com dados aleatórios
-  let id = 1;
-  for (let hora of horasDoDia) {
-    for (let comodo of comodos) {
-      const consumo = gerarConsumoAleatorio();
-      dados_consumo.push({ id, hora, comodo, consumo: parseFloat(consumo) });
-      id++;
-    }
-  }
+      const dados = QuerySnapshot.docs.map((doc) => ({
+        arquivo: doc.data(),
+      }));
+      for (const item of dados[0].arquivo.consumo) {
+        item.data_hora = extrairDataEHora(item.data_hora);
+      }
+      setDocumento(dados[0].arquivo);
+    });
+  }, []);
 
   return (
-    /*<dev>
+    <dev>
+      {console.log(documento.consumo) }
       <div
         style={{
           // paddingLeft: "200px",
@@ -102,41 +120,40 @@ function Dados() {
             paddingRight: "100px",
           }}
         >
-          {/* Gráfico de Área *//*}
+          {/* Gráfico de Área */ }
 
-    <h2 style={{ textAlign: "center" }}>
-      GRÁFICO DE CONSUMO DE ELETRICIDADE
-    </h2>
+          <h2 style={{ textAlign: "center" }}>
+            GRÁFICO DE CONSUMO DE ELETRICIDADE
+          </h2>
 
-    <div
-      style={{
-        // paddingLeft: "200px",
-        // paddingRight: "200px",
-        paddingBottom: "50px",
-      }}
-    >
-      <GraficoArea />
-    </div>
+          <div
+            style={{
+              // paddingLeft: "200px",
+              // paddingRight: "200px",
+              paddingBottom: "50px",
+            }}
+          >
+            <GraficoArea />
+          </div>
 
-    {/* tabela *//*}
-    <h2 style={{ textAlign: "center" }}>
-      TABELA DE CONSUMO DE ELETRICIDADE
-    </h2>
-    <Table responsive striped bordered hover size="sm">
-      <thead>
-        <tr>
-          <th>Horas</th>
-          <th>Cômodo</th>
-          <th>Consumo (kwh)</th>
-        </tr>
-      </thead>
-      <tbody>{renderRows(dados_consumo)}</tbody>
-    </Table>
-  </div>
-</div>
-</dev>
-*/
-    console.log(nomes)
+          {/* tabela */ }
+          <h2 style={{ textAlign: "center" }}>
+            TABELA DE CONSUMO DE ELETRICIDADE
+          </h2>
+          <Table responsive striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>Horas</th>
+                <th>Cômodo</th>
+                <th>Consumo (kwh)</th>
+              </tr>
+            </thead>
+            <tbody>{renderRows(documento.consumo)}</tbody>
+          </Table>
+        </div>
+      </div>
+
+    </dev>
   );
 }
 

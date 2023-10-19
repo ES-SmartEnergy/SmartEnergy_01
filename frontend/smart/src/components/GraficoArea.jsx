@@ -1,7 +1,7 @@
 import { ReactApexChart, ApexChart } from "react-apexcharts";
-import Chart from 'react-apexcharts'
+import Chart from "react-apexcharts";
 import { Component } from "react";
-import {dados_consumo, horasDoDia} from "./Dados.jsx"
+import { dados_consumo, horasDoDia } from "./Dados.jsx";
 /*
 // obter dados por comodo
 function obterValoresDeConsumoPorComodo(comodo) {
@@ -24,20 +24,20 @@ class GraficoArea extends Component {
         {
           name: "Sala",
           data: dados_consumo
-          .filter((dados) => dados.comodo === 'sala')
-          .map((dados) => dados.consumo),
+            .filter((dados) => dados.comodo === "sala")
+            .map((dados) => dados.consumo),
         },
         {
           name: "Quarto",
           data: dados_consumo
-          .filter((dados) => dados.comodo === 'quarto')
-          .map((dados) => dados.consumo),
+            .filter((dados) => dados.comodo === "quarto")
+            .map((dados) => dados.consumo),
         },
         {
           name: "Cozinha",
           data: dados_consumo
-          .filter((dados) => dados.comodo === 'cozinha')
-          .map((dados) => dados.consumo),
+            .filter((dados) => dados.comodo === "cozinha")
+            .map((dados) => dados.consumo),
         },
         /*{
           name: "Consumo Total",
