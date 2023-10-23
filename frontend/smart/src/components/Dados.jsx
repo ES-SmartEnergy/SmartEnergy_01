@@ -14,32 +14,7 @@ import {
 import { bd } from "../firebase.jsx";
 import React, { useState, useEffect } from "react";
 
-export const horasDoDia = [
-  "00:00",
-  "01:00",
-  "02:00",
-  "03:00",
-  "04:00",
-  "05:00",
-  "06:00",
-  "07:00",
-  "08:00",
-  "09:00",
-  "10:00",
-  "11:00",
-  "12:00",
-  "13:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
-  "18:00",
-  "19:00",
-  "20:00",
-  "21:00",
-  "22:00",
-  "23:00",
-];
+export var info = [];
 
 // Objeto dados_consumo com todas as chaves
 export const dados_consumo = [];
@@ -91,20 +66,22 @@ function Dados() {
 
   useEffect(() => {
     const q = query(collection(bd, "usuarios"));
+    var aux = true;
+
     onSnapshot(q, (QuerySnapshot) => {
       const dados = QuerySnapshot.docs.map((doc) => ({
         arquivo: doc.data(),
       }));
-      for (const item of dados[0].arquivo.consumo) {
-        item.data_hora = extrairDataEHora(item.data_hora);
-      }
-      setDocumento(dados[0].arquivo);
+
+      info = dados[0].arquivo;
+      setDocumento(info);
     });
   }, []);
 
+
   return (
     <dev>
-      {console.log(documento.consumo) }
+      {console.log(documento)}
       <div
         style={{
           // paddingLeft: "200px",
@@ -120,7 +97,7 @@ function Dados() {
             paddingRight: "100px",
           }}
         >
-          {/* Gráfico de Área */ }
+          {/* Gráfico de Área */}
 
           <h2 style={{ textAlign: "center" }}>
             GRÁFICO DE CONSUMO DE ELETRICIDADE
@@ -136,7 +113,8 @@ function Dados() {
             <GraficoArea />
           </div>
 
-          {/* tabela */ }
+          {/* tabela */
+          /*}
           <h2 style={{ textAlign: "center" }}>
             TABELA DE CONSUMO DE ELETRICIDADE
           </h2>
@@ -150,9 +128,9 @@ function Dados() {
             </thead>
             <tbody>{renderRows(documento.consumo)}</tbody>
           </Table>
+          {*/}
         </div>
       </div>
-
     </dev>
   );
 }

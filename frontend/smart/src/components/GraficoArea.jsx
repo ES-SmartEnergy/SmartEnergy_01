@@ -1,7 +1,7 @@
 import { ReactApexChart, ApexChart } from "react-apexcharts";
 import Chart from "react-apexcharts";
 import { Component } from "react";
-import { dados_consumo, horasDoDia } from "./Dados.jsx";
+import { info } from "./Dados.jsx";
 /*
 // obter dados por comodo
 function obterValoresDeConsumoPorComodo(comodo) {
@@ -15,43 +15,34 @@ const valoresSala = obterValoresDeConsumoPorComodo('sala');
 const valoresQuarto = obterValoresDeConsumoPorComodo('quarto');
 const valoresCozinha = obterValoresDeConsumoPorComodo('cozinha');*/
 
+// obter series
+function obterSeries(vetorDeMapas) {
+  var series = [];
+  vetorDeMapas.forEach((mapa) => {
+    const comodo = mapa.comodo;
+    
+    if (!comodosUnicos.has(comodo)) {
+      comodosUnicos.add(comodo);
+      
+      const dadosComodo = vetorDeMapas
+        .filter((dados) => dados.comodo === comodo)
+        .map((dados) => dados.gasto);
+  
+      series.push({
+        name: comodo,
+        data: dadosComodo,
+      });
+    }
+  });
+  console.log(series)
+  return (series)
+}
 class GraficoArea extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      series: [
-        {
-          name: "Sala",
-          data: dados_consumo
-            .filter((dados) => dados.comodo === "sala")
-            .map((dados) => dados.consumo),
-        },
-        {
-          name: "Quarto",
-          data: dados_consumo
-            .filter((dados) => dados.comodo === "quarto")
-            .map((dados) => dados.consumo),
-        },
-        {
-          name: "Cozinha",
-          data: dados_consumo
-            .filter((dados) => dados.comodo === "cozinha")
-            .map((dados) => dados.consumo),
-        },
-        /*{
-          name: "Consumo Total",
-          data: dados_consumo
-          .filter((dados) => dados.comodo === 'sala')
-          .map((dados) => dados.consumo) + 
-          dados_consumo
-          .filter((dados) => dados.comodo === 'quarto')
-          .map((dados) => dados.consumo) + 
-          dados_consumo
-          .filter((dados) => dados.comodo === 'cozinha')
-          .map((dados) => dados.consumo),
-        },*/
-      ],
+      series: obterSeries(info),
       options: {
         chart: {
           height: 350,
@@ -65,7 +56,7 @@ class GraficoArea extends Component {
         },
         xaxis: {
           //type: "time",
-          categories: horasDoDia,
+          categories: info.map((mapa) => mapa.data_hora),
         },
       },
     };
@@ -74,6 +65,7 @@ class GraficoArea extends Component {
   render() {
     return (
       <div id="chart">
+        {}
         <Chart
           options={this.state.options}
           series={this.state.series}
