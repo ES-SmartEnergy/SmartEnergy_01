@@ -1,7 +1,9 @@
 import { ReactApexChart, ApexChart } from "react-apexcharts";
 import Chart from "react-apexcharts";
 import { Component } from "react";
-import { info } from "./Dados.jsx";
+import axios from "axios"
+import React, { useState, useEffect } from "react";
+
 /*
 // obter dados por comodo
 function obterValoresDeConsumoPorComodo(comodo) {
@@ -40,6 +42,21 @@ function obterSeries(vetorDeMapas) {
 class GraficoArea extends Component {
   constructor(props) {
     super(props);
+
+    const [info, setInfo] = useState([]);
+
+    const getInfo = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/dados");
+        setInfo(res.data.consumo);
+      } catch (error) {
+        toast.error(error);
+      }
+    };
+  
+    useEffect(() => {
+      getInfo();
+    }, [setInfo]);
 
     this.state = {
       series: obterSeries(info),

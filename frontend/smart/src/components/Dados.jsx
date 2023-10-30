@@ -4,14 +4,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Grafico from "./Grafico";
 import GraficoArea from "./GraficoArea";
-import {
-  collection,
-  query,
-  orderBy,
-  onSnapshot,
-  QuerySnapshot,
-} from "firebase/firestore";
-import { bd } from "../firebase.jsx";
+import axios from "axios"
 import React, { useState, useEffect } from "react";
 
 export var info = [];
@@ -62,9 +55,35 @@ function extrairDataEHora(data_hora) {
 }
 
 function Dados() {
+
   const [documento, setDocumento] = useState([]);
 
+  const getDocumento = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/dados");
+      setDocumento(res.data);
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
   useEffect(() => {
+    getDocumento();
+  }, [setDocumento]);
+  /*const getUsers = async () => {
+    try {
+      const res = await axios.get("http://localhost:8800");
+      setUsers(res.data.sort((a, b) => (a.nome > b.nome ? 1 : -1)));
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, [setUsers]);*/
+
+  /*const getDocumento = async () => {
     const q = query(collection(bd, "usuarios"));
     var aux = true;
 
@@ -76,7 +95,11 @@ function Dados() {
       info = dados[0].arquivo;
       setDocumento(info);
     });
-  }, []);
+  };
+  
+  useEffect(() => {
+    getDocumento();
+  }, [setDocumento]);*/
 
 
   return (
