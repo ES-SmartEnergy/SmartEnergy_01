@@ -1,11 +1,8 @@
 const { initializeApp } = require("firebase/app");
 const { getFirestore } = require("firebase/firestore");
+const { getAuth, signInWithEmailAndPassword } = require("firebase/auth");
+const { GoogleAuthProvider } = require("firebase/auth");
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
     apiKey: "AIzaSyA4u_3ffGHzRbwkJOcm4DrDYfrz2lTGEDU",
@@ -22,4 +19,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const bd = getFirestore(app);
 
+// Acesso ao Banco de dados
 exports.bd = bd;
+
+// Autenticador email-senha
+const auth = getAuth(app);
+exports.auth = auth;
+
+// autenticador Google (Abortado por enquanto)
+const provider = new GoogleAuthProvider();
+
+exports.provider = provider

@@ -1,34 +1,22 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-//import './App.css'
-import Home from "./components/Home";
-import Dados from "./components/Dados";
+import Home from "./components/home/Home";
+import Dados from "./components/dados/Dados";
+import Login from "./components/login/Login";
 import { BrowserRouter, Route, Link, Routes } from "react-router-dom";
-import Nav from "react-bootstrap/Nav";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Register from "./components/login/Register";
 
 function App() {
   return (
     <>
       <div>
         <BrowserRouter>
-          <Nav variant="underline">
-            <Nav.Item>
-              <Nav.Link as={Link} to="/">
-                Home
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={Link} to="/dados">
-                Dados
-              </Nav.Link>
-            </Nav.Item>
-          </Nav>
-          <div style={{ backgroundColor: '#d8ffcc'}}>
+          
+          <div style={{ backgroundColor: '#b4dff1'}}>
             <Routes>
-              <Route path="/" element={<Home />}></Route>
+              <Route path="/" element={<Login />}></Route>
+              <Route path="/home" element={<Home />}></Route>
               <Route path="/dados" element={<Dados />}></Route>
+              <Route path="/register" element={<Register />}></Route>
             </Routes>
           </div>
         </BrowserRouter>

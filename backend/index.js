@@ -1,7 +1,7 @@
 
 
 
-const routes = require("./routes/routes.js")
+const routes = require("./routes/routes_dado.js")
 const express = require("express")
 const cors = require("cors")
 
