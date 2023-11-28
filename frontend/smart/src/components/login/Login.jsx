@@ -24,6 +24,12 @@ function Login() {
   function handleSignIn(e) {
     e.preventDefault();
 
+    // Validar campos
+    if (!email || !senha) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+
     // Enviar dados usando axios.post
     axios
       .post("http://localhost:3000/login", {
@@ -38,10 +44,12 @@ function Login() {
       })
       .catch((error) => {
         console.log("Credenciais inválidas");
+        alert(
+          "Credenciais inválidas. Por favor, verifique seu e-mail e senha."
+        );
         // Lógica adicional em caso de erro
       });
   }
-
   return (
     <div
       style={{
@@ -96,7 +104,7 @@ function Login() {
                 id="email"
                 placeholder="johndoe@gmail.com"
                 onChange={(e) => setEmail(e.target.value)}
-                required/>
+              />
             </div>
 
             <div
@@ -117,7 +125,7 @@ function Login() {
                 id="password"
                 placeholder="senha"
                 onChange={(e) => setSenha(e.target.value)}
-                required/>
+              />
             </div>
 
             <button

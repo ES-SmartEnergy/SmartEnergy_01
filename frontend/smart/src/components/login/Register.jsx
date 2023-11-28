@@ -11,10 +11,16 @@ import {
 } from "react-router-dom";
 
 function Register() {
-  const [email, setEmail] = useState("batata@cenoura.com");
-  const [senha, setSenha] = useState("macaverde");
-  const [nome, setNome] = useState("Lucas");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [nome, setNome] = useState("");
   const navigate = useNavigate();
+
+  const isEmailValid = (email) => {
+    // Expressão regular para validar um e-mail
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const registrar = (uid) => {
     axios
@@ -23,11 +29,12 @@ function Register() {
         uid,
       })
       .then((response) => {
-        alert("Tudo certo, você já pode se logar!");
+        alert("Cadastro realizado com sucesso!");
         navigate("/");
       })
       .catch((error) => {
         console.log("Falha: ", error);
+        alert("Erro ao cadastrar. Por favor, tente novamente.");
         // Lógica adicional em caso de erro
       });
   };
@@ -35,7 +42,17 @@ function Register() {
   function handleSignIn(e) {
     e.preventDefault();
 
-    console.log(email, senha, nome);
+    // Validar campos
+    if (!nome || !email || !senha) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    // Validar formato do e-mail
+    if (!isEmailValid(email)) {
+      alert("Por favor, insira um e-mail válido.");
+      return;
+    }
 
     // Enviar dados usando axios.post
     axios
@@ -50,6 +67,7 @@ function Register() {
       })
       .catch((error) => {
         console.log(error);
+        alert("Erro ao cadastrar. Por favor, tente novamente.");
         // Lógica adicional em caso de erro
       });
   }
@@ -59,7 +77,6 @@ function Register() {
 
     navigate("/");
   }
-
   return (
     <div
       style={{
