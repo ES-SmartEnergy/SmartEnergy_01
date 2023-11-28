@@ -5,18 +5,11 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Navbar from "../navbar/Navbar";
 import { uid } from "../login/Login";
-import { useLocation } from "react-router-dom";
 
 function Dados() {
   const [documento, setDocumento] = useState([]);
 
-  const [comodoSelecionado, setComodoSelecionado] = useState(""); // Estado para armazenar o cômodo selecionado
-
   const [refino, setRefino] = useState("");
-
-  const location = useLocation();
-
-  const meuAtributo = location;
 
   const refinofiltrado = documento.consumo
     ? documento.consumo.filter((item) => item.comodo.startsWith(refino))
@@ -40,18 +33,6 @@ function Dados() {
     getDocumento();
   }, []);
 
-  // Função para obter todos os cômodos únicos disponíveis
-  const obterCmodosUnicos = () => {
-    const cmodos = documento.consumo.map((item) => item.comodo);
-    const cmodosUnicos = Array.from(new Set(cmodos));
-    return cmodosUnicos;
-  };
-
-  // Manipulador de evento para alteração no Dropdown de cômodos
-  const handleDropdownChange = (e) => {
-    setComodoSelecionado(e.target.value);
-  };
-
   // Função para renderizar as linhas da tabela conforme o cômodo selecionado
   function renderRows(array) {
     if (array.length == 0) {
@@ -72,17 +53,14 @@ function Dados() {
     const rows = [];
     for (let i = 0; i < array.length; i++) {
       const d = array[i];
-      if (d.comodo === comodoSelecionado || comodoSelecionado === "") {
-        // Verifica se o cômodo corresponde ao selecionado ou se nada foi selecionado
-        const dataHoraSem11Caracteres = d.data_hora.slice(11);
-        rows.push(
-          <tr key={i}>
-            <td>{dataHoraSem11Caracteres}</td>
-            <td>{d.comodo}</td>
-            <td>{d.gasto}</td>
-          </tr>
-        );
-      }
+      const dataHoraSem11Caracteres = d.data_hora.slice(11);
+      rows.push(
+        <tr key={i}>
+          <td>{dataHoraSem11Caracteres}</td>
+          <td>{d.comodo}</td>
+          <td>{d.gasto}</td>
+        </tr>
+      );
     }
     return rows;
   }

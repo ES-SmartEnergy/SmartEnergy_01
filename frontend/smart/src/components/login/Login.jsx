@@ -96,7 +96,7 @@ function Login() {
                 id="email"
                 placeholder="johndoe@gmail.com"
                 onChange={(e) => setEmail(e.target.value)}
-              />
+                required/>
             </div>
 
             <div
@@ -117,7 +117,7 @@ function Login() {
                 id="password"
                 placeholder="senha"
                 onChange={(e) => setSenha(e.target.value)}
-              />
+                required/>
             </div>
 
             <button

@@ -3,14 +3,15 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../navbar/Navbar";
 import { uid } from "../login/Login";
+import Table from "react-bootstrap/Table";
 
 function Home() {
   const [documento, setDocumento] = useState([]);
-  //const [] // continuar daq
+  const [refino, setRefino] = useState("");
 
   const getDocumento = async () => {
     axios
-      .post("http://localhost:3000/dados", {
+      .post("http://localhost:3000/home", {
         uid,
       })
       .then((response) => {
@@ -25,6 +26,34 @@ function Home() {
   useEffect(() => {
     getDocumento();
   }, [setDocumento]);
+
+  // Função para renderizar as linhas da tabela conforme o cômodo selecionado
+  function renderRows(documentoData) {
+    const rows = [];
+
+    for (const [dataHora, consumo] of Object.entries(documentoData)) {
+      // Adiciona a linha para cada entrada de dataHora
+      consumo.forEach((item, index) => {
+        const data_horarefinada = item.data_hora.slice(0, -9);
+
+        rows.push(
+          <tr style={{ textAlign: "left" }} key={`${dataHora}_${index}`}>
+            <td>{data_horarefinada}</td>
+            <td>{item.comodo}</td>
+            <td style={{ textAlign: "left" }}>{item.gasto.toFixed(2)}</td>
+          </tr>
+        );
+      });
+    }
+
+    return rows.length > 0 ? (
+      rows
+    ) : (
+      <tr>
+        <td colSpan="3">Nenhum dado disponível</td>
+      </tr>
+    );
+  }
 
   return (
     <div>
@@ -47,14 +76,14 @@ function Home() {
                 paddingLeft: "100px",
                 paddingRight: "100px",
                 paddingTop: "50px",
-                textAlign: "center",
-                padding: "10px",
               }}
             >
-              <h1>Olá {documento.nome}, espero que você esteja legal!</h1>
+              <h1 style={{ textAlign: "center" }}>
+                Olá, espero que você esteja legal!
+              </h1>
 
               <h2 style={{ textAlign: "center" }}>
-                GRÁFICO DA MÉDIA DE CONSUMO DE ELETRICIDADE
+                TABELA DE GASTO MÉDIO POR HORA
               </h2>
 
               <div
@@ -64,7 +93,16 @@ function Home() {
                   paddingBottom: "50px",
                 }}
               >
-                <GraficoArea documento={documento} />
+                <Table responsive striped bordered hover size="sm">
+                  <thead style={{ textAlign: "left" }}>
+                    <tr>
+                      <th>Dia</th>
+                      <th>Cômodo</th>
+                      <th>Consumo (kwh)</th>
+                    </tr>
+                  </thead>
+                  <tbody>{renderRows(documento)}</tbody>
+                </Table>
               </div>
             </div>
           </div>

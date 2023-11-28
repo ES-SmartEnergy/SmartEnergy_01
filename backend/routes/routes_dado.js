@@ -3,12 +3,13 @@ const getDocumentoDado = require("../controllers/getDocumentoDado.js")
 const getUsuario = require("../controllers/getUsuario.js")
 const getNovoUsuario = require("../controllers/getNovoUsuario.js")
 const setDocumento = require("../controllers/setDocumento.js")
+const getDocumentoHome = require("../controllers/getDocumentoHome.js")
 
 const router = express.Router()
 
 router.post("/dados", getDocumentoDado)
 
-//router.post("/home", getDocumentoHome)
+router.post("/home", getDocumentoHome)
 
 //router.get("/login", getUsuario)
 
