@@ -6,7 +6,7 @@ import { uid } from "../login/Login";
 
 function Home() {
   const [documento, setDocumento] = useState([]);
-  const [] // continuar daq
+  //const [] // continuar daq
 
   const getDocumento = async () => {
     axios
